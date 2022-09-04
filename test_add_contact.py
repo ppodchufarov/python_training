@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
 import unittest
+from contact import Contact
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):
@@ -13,7 +14,7 @@ class UntitledTestCase(unittest.TestCase):
         wd = self.wd
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.create_contact(wd, firstname="qwertyu", home_number="1234567890")
+        self.create_contact(wd, Contact(firstname="qwertyu", home_number="1234567890"))
         self.return_to_home_page(wd)
         self.logout(wd)
 
@@ -21,7 +22,7 @@ class UntitledTestCase(unittest.TestCase):
         wd = self.wd
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.create_contact(wd, firstname="", home_number="")
+        self.create_contact(wd, Contact(firstname="", home_number=""))
         self.return_to_home_page(wd)
         self.logout(wd)
 
@@ -32,16 +33,16 @@ class UntitledTestCase(unittest.TestCase):
         # return to home page
         wd.find_element_by_link_text("home").click()
 
-    def create_contact(self, wd, firstname, home_number):
+    def create_contact(self, wd, contact):
         # open contact creation page
         wd.find_element_by_link_text("add new").click()
         # fill contact form
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(firstname)
+        wd.find_element_by_name("firstname").send_keys(contact.firstname)
         wd.find_element_by_name("home").click()
         wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(home_number)
+        wd.find_element_by_name("home").send_keys(contact.home_number)
         # submit contact creation (press 'Enter')
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
 
