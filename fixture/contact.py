@@ -33,3 +33,20 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         # closing the pop-up window
         wd.switch_to.alert.accept()
+
+    def modify(self, contact):
+        wd = self.app.wd
+        # select first contact
+        wd.find_element_by_name("selected[]").click()
+        # follow edit contact form
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        # fill contact form
+        wd.find_element_by_name("firstname").click()
+        wd.find_element_by_name("firstname").clear()
+        wd.find_element_by_name("firstname").send_keys(contact.firstname)
+        wd.find_element_by_name("home").click()
+        wd.find_element_by_name("home").clear()
+        wd.find_element_by_name("home").send_keys(contact.home_number)
+        # submit contact edit
+        wd.find_element_by_name("update").click()
+        self.return_to_home_page()
