@@ -29,23 +29,29 @@ class ContactHelper:
         # closing the pop-up window
         wd.switch_to.alert.accept()
 
-    def modify(self, contact):
+    def modify_first_contact(self, new_contact_date):
         wd = self.app.wd
         self.open_to_home_page()
-        # select first contact
-        wd.find_element_by_name("selected[]").click()
+        self.select_first_contact()
         # follow edit contact form
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        self.fill_contact_form(contact)
+        self.fill_contact_form(new_contact_date)
         # submit contact edit
         wd.find_element_by_name("update").click()
         self.open_to_home_page()
 
+    def select_first_contact(self):
+        wd = self.app.wd
+        wd.find_element_by_name("selected[]").click()
+
     def fill_contact_form(self, contact):
         wd = self.app.wd
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(contact.firstname)
-        wd.find_element_by_name("home").click()
-        wd.find_element_by_name("home").clear()
-        wd.find_element_by_name("home").send_keys(contact.home_number)
+        self.change_field_value("firstname", contact.firstname)
+        self.change_field_value("home", contact.home_number)
+
+    def change_field_value(self, field_name, text):
+        wd = self.app.wd
+        if text is not None:
+            wd.find_element_by_name(field_name).click()
+            wd.find_element_by_name(field_name).clear()
+            wd.find_element_by_name(field_name).send_keys(text)
